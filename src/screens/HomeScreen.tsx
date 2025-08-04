@@ -4,6 +4,7 @@ import IdeaBank from "./IdeaBank";
 import Counter from "./Counter";
 import CoinFlip from "./CoinFlip";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Post } from "./Posts";
 
 const HomeScreen = () => {
   const Tabs = createBottomTabNavigator();
@@ -31,6 +32,15 @@ const HomeScreen = () => {
           } else if (route.name === "Coin Flip") {
             iconName = focused ? "cash" : "cash-outline";
             return <Ionicons name={iconName} size={size} color={color} />;
+          } else if (route.name === "Posts") {
+            iconName = focused ? "post" : "post-outline";
+            return (
+              <MaterialCommunityIcons
+                name={iconName}
+                size={size}
+                color={color}
+              />
+            );
           }
         },
         tabBarActiveTintColor: "#007AFF",
@@ -48,6 +58,7 @@ const HomeScreen = () => {
       <Tabs.Screen name="Idea Bank" component={IdeaBank}></Tabs.Screen>
       <Tabs.Screen name="Counter" component={Counter}></Tabs.Screen>
       <Tabs.Screen name="Coin Flip" component={CoinFlip}></Tabs.Screen>
+      <Tabs.Screen name="Posts" component={Post}></Tabs.Screen>
     </Tabs.Navigator>
   );
 };
