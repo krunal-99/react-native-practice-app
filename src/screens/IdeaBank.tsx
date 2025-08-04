@@ -8,10 +8,13 @@ import {
 } from "react-native";
 import CustomText from "../components/ui/CustomText";
 import CustomInput from "../components/ui/CustomInput";
+import { addIdea } from "../store/ideas.slice";
+import { useAppDispatch, useAppSelector } from "../store/store";
 
 const IdeaBank = () => {
-  const [ideas, setIdeas] = useState<string[]>([]);
   const [input, setInput] = useState<string>("");
+  const dispatch = useAppDispatch();
+  const ideas = useAppSelector((state) => state.idea.idea);
   return (
     <View style={styles.container}>
       <CustomInput
@@ -23,7 +26,7 @@ const IdeaBank = () => {
       />
       <TouchableOpacity
         onPress={() => {
-          setIdeas([...ideas, input]);
+          dispatch(addIdea(input));
           setInput("");
         }}
         style={styles.button}

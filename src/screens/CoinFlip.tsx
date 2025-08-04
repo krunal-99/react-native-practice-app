@@ -1,15 +1,13 @@
-import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import React from "react";
+import { View, Image, StyleSheet, Pressable } from "react-native";
 import CustomText from "../components/ui/CustomText";
+import { flip } from "../store/coin.slice";
+import { useAppDispatch, useAppSelector } from "../store/store";
 
 const CoinFlipApp = () => {
-  const [result, setResult] = useState("Heads!");
+  const side = useAppSelector((state) => state.coin.side);
   const coinImage = require("./assets/coin.png");
-
-  const flipCoin = () => {
-    const side = Math.random() < 0.5 ? "Heads!" : "Tails!";
-    setResult(side);
-  };
+  const dispatch = useAppDispatch();
 
   return (
     <View style={styles.container}>
@@ -17,8 +15,8 @@ const CoinFlipApp = () => {
         <Image source={coinImage} style={styles.image} resizeMode="contain" />
       </View>
 
-      <CustomText style={styles.resultText} label={result}></CustomText>
-      <Pressable style={styles.button} onPress={flipCoin}>
+      <CustomText style={styles.resultText} label={side}></CustomText>
+      <Pressable style={styles.button} onPress={() => dispatch(flip())}>
         <CustomText
           style={styles.buttonText}
           label="Flip the Coin"

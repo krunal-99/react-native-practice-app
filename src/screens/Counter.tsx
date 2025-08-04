@@ -1,23 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import CustomText from "../components/ui/CustomText";
 import CustomButton from "../components/ui/CustomButton";
+import { decrement, increment, reset } from "../store/counter.slice";
+import { useAppDispatch, useAppSelector } from "../store/store";
 
 const Counter = () => {
-  const [count, setCount] = useState<number>(0);
+  const dispatch = useAppDispatch();
+  const count = useAppSelector((state) => state.counter.count);
   return (
     <View style={styles.container}>
       <CustomText style={styles.title} label="Counter"></CustomText>
       <CustomText style={styles.count} label={count}></CustomText>
       <View style={styles.buttonContainer}>
         <View style={styles.button}>
-          <CustomButton title="+" onPress={() => setCount(count + 1)} />
+          <CustomButton title="+" onPress={() => dispatch(increment())} />
         </View>
         <View style={styles.button}>
-          <CustomButton title="Reset" onPress={() => setCount(0)} />
+          <CustomButton title="Reset" onPress={() => dispatch(reset())} />
         </View>
         <View style={styles.button}>
-          <CustomButton title="-" onPress={() => setCount(count - 1)} />
+          <CustomButton title="-" onPress={() => dispatch(decrement())} />
         </View>
       </View>
     </View>
