@@ -1,60 +1,40 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import React from "react";
-import { Button, Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
 import { RootStackParamList } from "../constants/types";
-import CustomText from "../components/ui/CustomText";
+import LoginForm from "../components/form/LoginForm";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-type Props = StackScreenProps<RootStackParamList, "Login">;
+export type Props = StackScreenProps<RootStackParamList, "Login">;
 
 const LoginScreen = ({ navigation }: Props) => {
   return (
-    <View style={styles.container}>
-      <CustomText label="Login to continue" style={styles.title}></CustomText>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() =>
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "Home" }],
-          })
-        }
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={"padding"}
+        style={styles.keyboardAvoidingView}
       >
-        <CustomText label="Login" style={styles.buttonText}></CustomText>
-      </TouchableOpacity>
-    </View>
+        <View style={styles.innerContainer}>
+          <LoginForm navigation={navigation} />
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F2F2F2",
+    backgroundColor: "#f0f4f8",
+  },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
+  innerContainer: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "600",
-    color: "#333",
-    marginBottom: 30,
-  },
-  button: {
-    backgroundColor: "#6C63FF",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 25,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  buttonText: {
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "500",
-    letterSpacing: 0.5,
+    paddingHorizontal: 20,
   },
 });
 
