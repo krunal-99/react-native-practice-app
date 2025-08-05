@@ -9,14 +9,6 @@ import { RootStackParamList } from "../../constants/types";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 const { width } = Dimensions.get("window");
-const myEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-Yup.addMethod(Yup.string, "email", function validateEmail(message) {
-  return this.matches(myEmailRegex, {
-    message,
-    name: "email",
-    excludeEmptyString: true,
-  });
-});
 
 const LoginForm = ({
   navigation,
@@ -24,7 +16,12 @@ const LoginForm = ({
   navigation: StackNavigationProp<RootStackParamList, "Login", undefined>;
 }) => {
   const validationLogic = Yup.object({
-    email: Yup.string().email("Invalid email").required("Email is required"),
+    email: Yup.string()
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        "Please enter a valid email"
+      )
+      .required("Email is required"),
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
