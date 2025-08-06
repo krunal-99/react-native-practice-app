@@ -4,7 +4,6 @@ import LoginScreen from "../screens/LoginScreen";
 import { RootStackParamList } from "../constants/types";
 import HomeScreen from "../screens/HomeScreen";
 import AuthLoadingScreen from "../screens/AuthLoadingScreen";
-import SinglePost from "../screens/SinglePost";
 
 export const MainNavigator = () => {
   const Stack = createStackNavigator<RootStackParamList>();
@@ -21,7 +20,6 @@ export const MainNavigator = () => {
         component={HomeScreen}
         options={{ headerShown: false }}
       ></Stack.Screen>
-      <Stack.Screen name="SinglePost" component={SinglePost} />
     </Stack.Navigator>
   );
 };
