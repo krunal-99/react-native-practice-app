@@ -8,8 +8,16 @@ const PostNavigator = () => {
   const Stack = createStackNavigator<RootStackParamList>();
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Post" component={Posts} />
-      <Stack.Screen name="SinglePost" component={SinglePost} />
+      <Stack.Screen
+        name="Post"
+        component={Posts}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SinglePost"
+        component={SinglePost}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };

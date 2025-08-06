@@ -3,8 +3,8 @@ import React from "react";
 import IdeaBank from "./IdeaBank";
 import Counter from "./Counter";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { Post } from "./Posts";
 import Profile from "./Profile";
+import PostNavigator from "../navigation/PostNavigator";
 
 const HomeScreen = () => {
   const Tabs = createBottomTabNavigator();
@@ -66,7 +66,7 @@ const HomeScreen = () => {
     >
       <Tabs.Screen name="Idea Bank" component={IdeaBank}></Tabs.Screen>
       <Tabs.Screen name="Counter" component={Counter}></Tabs.Screen>
-      <Tabs.Screen name="Posts" component={Post}></Tabs.Screen>
+      <Tabs.Screen name="Posts" component={PostNavigator}></Tabs.Screen>
       <Tabs.Screen name="Profile" component={Profile}></Tabs.Screen>
     </Tabs.Navigator>
   );
