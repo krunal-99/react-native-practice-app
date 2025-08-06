@@ -2,8 +2,8 @@ import { StackScreenProps } from "@react-navigation/stack";
 
 export type RootStackParamList = {
   Login: undefined;
-  Home: undefined;
   AuthLoading: undefined;
+  Profile: undefined;
 };
 
 type Reactions = {
@@ -29,8 +29,11 @@ export interface PostsResponse {
 }
 
 export type LoginScreenProps = StackScreenProps<RootStackParamList, "Login">;
-export type HomeScreenProps = StackScreenProps<RootStackParamList, "Home">;
 export type AuthLoadingScreenProps = StackScreenProps<
   RootStackParamList,
   "AuthLoading"
+>;
+export type ProfileScreenProps = StackScreenProps<
+  RootStackParamList,
+  "Profile"
 >;

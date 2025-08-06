@@ -2,56 +2,15 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import IdeaBank from "./IdeaBank";
 import Counter from "./Counter";
-import CoinFlip from "./CoinFlip";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Post } from "./Posts";
-import { Alert } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { HomeScreenProps } from "../constants/types";
-import CustomText from "../components/ui/CustomText";
-import CustomTouchableOpacity from "../components/ui/CustomTouchableOpacity";
+import Profile from "./Profile";
 
-const HomeScreen = ({ navigation }: HomeScreenProps) => {
+const HomeScreen = () => {
   const Tabs = createBottomTabNavigator();
-  const LogoutButton = () => {
-    const handleLogout = async () => {
-      Alert.alert("Confirm Logout", "Are you sure you want to logout?", [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Logout",
-          style: "destructive",
-          onPress: async () => {
-            await AsyncStorage.removeItem("user");
-            navigation.replace("Login");
-          },
-        },
-      ]);
-    };
-
-    return (
-      <CustomTouchableOpacity
-        onPress={handleLogout}
-        style={{
-          marginRight: 15,
-          backgroundColor: "#FF3B30",
-          paddingVertical: 6,
-          paddingHorizontal: 12,
-          borderRadius: 8,
-        }}
-      >
-        <CustomText style={{ color: "#fff", fontWeight: "bold" }}>
-          Logout
-        </CustomText>
-      </CustomTouchableOpacity>
-    );
-  };
   return (
     <Tabs.Navigator
       screenOptions={({ route }) => ({
-        headerRight: () => <LogoutButton />,
         tabBarIcon: ({ focused, color, size }) => {
           let iconName:
             | keyof typeof Ionicons.glyphMap
@@ -82,6 +41,15 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 color={color}
               />
             );
+          } else if (route.name === "Profile") {
+            iconName = "face-man-profile";
+            return (
+              <MaterialCommunityIcons
+                name={iconName}
+                size={size}
+                color={color}
+              />
+            );
           }
         },
         tabBarActiveTintColor: "#007AFF",
@@ -98,8 +66,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     >
       <Tabs.Screen name="Idea Bank" component={IdeaBank}></Tabs.Screen>
       <Tabs.Screen name="Counter" component={Counter}></Tabs.Screen>
-      <Tabs.Screen name="Coin Flip" component={CoinFlip}></Tabs.Screen>
       <Tabs.Screen name="Posts" component={Post}></Tabs.Screen>
+      <Tabs.Screen name="Profile" component={Profile}></Tabs.Screen>
     </Tabs.Navigator>
   );
 };
