@@ -1,13 +1,10 @@
-import { StackScreenProps } from "@react-navigation/stack";
 import React from "react";
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
-import { RootStackParamList } from "../constants/types";
+import { View, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { LoginScreenProps } from "../constants/types";
 import LoginForm from "../components/form/LoginForm";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export type Props = StackScreenProps<RootStackParamList, "Login">;
-
-const LoginScreen = ({ navigation }: Props) => {
+const LoginScreen = ({ navigation }: LoginScreenProps) => {
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView

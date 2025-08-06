@@ -5,12 +5,53 @@ import Counter from "./Counter";
 import CoinFlip from "./CoinFlip";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Post } from "./Posts";
+import { Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { HomeScreenProps } from "../constants/types";
+import CustomText from "../components/ui/CustomText";
+import CustomTouchableOpacity from "../components/ui/CustomTouchableOpacity";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const Tabs = createBottomTabNavigator();
+  const LogoutButton = () => {
+    const handleLogout = async () => {
+      Alert.alert("Confirm Logout", "Are you sure you want to logout?", [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Logout",
+          style: "destructive",
+          onPress: async () => {
+            await AsyncStorage.removeItem("user");
+            navigation.replace("Login");
+          },
+        },
+      ]);
+    };
+
+    return (
+      <CustomTouchableOpacity
+        onPress={handleLogout}
+        style={{
+          marginRight: 15,
+          backgroundColor: "#FF3B30",
+          paddingVertical: 6,
+          paddingHorizontal: 12,
+          borderRadius: 8,
+        }}
+      >
+        <CustomText style={{ color: "#fff", fontWeight: "bold" }}>
+          Logout
+        </CustomText>
+      </CustomTouchableOpacity>
+    );
+  };
   return (
     <Tabs.Navigator
       screenOptions={({ route }) => ({
+        headerRight: () => <LogoutButton />,
         tabBarIcon: ({ focused, color, size }) => {
           let iconName:
             | keyof typeof Ionicons.glyphMap

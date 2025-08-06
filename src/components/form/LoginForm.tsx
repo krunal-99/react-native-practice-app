@@ -1,19 +1,19 @@
-import { Formik } from "formik";
 import React from "react";
-import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
-
+import { Formik } from "formik";
+import { Dimensions, StyleSheet, View } from "react-native";
 import * as Yup from "yup";
 import CustomInput from "../ui/CustomInput";
 import CustomText from "../ui/CustomText";
-import { RootStackParamList } from "../../constants/types";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { LoginScreenProps } from "../../constants/types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomTouchableOpacity from "../ui/CustomTouchableOpacity";
 
 const { width } = Dimensions.get("window");
 
 const LoginForm = ({
   navigation,
 }: {
-  navigation: StackNavigationProp<RootStackParamList, "Login", undefined>;
+  navigation: LoginScreenProps["navigation"];
 }) => {
   const validationLogic = Yup.object({
     email: Yup.string()
@@ -33,9 +33,14 @@ const LoginForm = ({
         password: "",
       }}
       validationSchema={validationLogic}
-      onSubmit={(values) => {
-        navigation.navigate("Home");
-        console.log("Form submitted with values:", values);
+      onSubmit={async (values) => {
+        await AsyncStorage.setItem("user", JSON.stringify(values));
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Home" }],
+        });
+        values.email = "";
+        values.password = "";
       }}
     >
       {({
@@ -76,12 +81,12 @@ const LoginForm = ({
             {errors.password && touched.password && (
               <CustomText label={errors.password} style={styles.error} />
             )}
-            <TouchableOpacity
+            <CustomTouchableOpacity
               style={styles.button}
               onPress={() => handleSubmit()}
             >
               <CustomText label="Login" style={styles.buttonText}></CustomText>
-            </TouchableOpacity>
+            </CustomTouchableOpacity>
           </View>
         </View>
       )}

@@ -1,20 +1,34 @@
-import React, { useState } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { FlatList, Keyboard, StyleSheet, Text, View } from "react-native";
 import CustomText from "../components/ui/CustomText";
 import CustomInput from "../components/ui/CustomInput";
-import { addIdea } from "../store/ideas.slice";
-import { useAppDispatch, useAppSelector } from "../store/store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import CustomTouchableOpacity from "../components/ui/CustomTouchableOpacity";
 
 const IdeaBank = () => {
   const [input, setInput] = useState<string>("");
-  const dispatch = useAppDispatch();
-  const ideas = useAppSelector((state) => state.idea.idea);
+  const [ideas, setIdeas] = useState<string[]>([]);
+
+  const clearIdeas = async () => {
+    setIdeas([]);
+    await AsyncStorage.removeItem("ideas");
+  };
+
+  const setIdea = async (idea: string) => {
+    if (!idea.trim()) return;
+    setIdeas((prev) => [...prev, idea]);
+    await AsyncStorage.setItem("ideas", JSON.stringify(ideas));
+    Keyboard.dismiss();
+  };
+  useEffect(() => {
+    const loadIdeas = async () => {
+      const ideas = await AsyncStorage.getItem("ideas");
+      setIdeas(ideas ? JSON.parse(ideas) : []);
+    };
+    loadIdeas();
+  }, []);
+
   return (
     <View style={styles.container}>
       <CustomInput
@@ -24,15 +38,20 @@ const IdeaBank = () => {
         onChangeText={setInput}
         style={styles.input}
       />
-      <TouchableOpacity
+      <CustomTouchableOpacity
         onPress={() => {
-          dispatch(addIdea(input));
+          setIdea(input);
           setInput("");
         }}
         style={styles.button}
       >
         <CustomText style={styles.buttonText} label="Submit"></CustomText>
-      </TouchableOpacity>
+      </CustomTouchableOpacity>
+      {ideas.length > 0 && (
+        <CustomTouchableOpacity onPress={clearIdeas} style={styles.clearButton}>
+          <AntDesign name="delete" size={24} color="#fff" />
+        </CustomTouchableOpacity>
+      )}
       <FlatList
         data={ideas}
         keyExtractor={(item, index) => index.toString()}
@@ -86,6 +105,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
     elevation: 2,
+  },
+  clearButton: {
+    width: "20%",
+    backgroundColor: "#FF6B6B",
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: "center",
+    marginLeft: "auto",
+    marginBottom: 25,
+    elevation: 3,
   },
 });
 
