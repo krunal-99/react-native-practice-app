@@ -20,7 +20,7 @@ import {
   launchImageLibrary,
 } from "react-native-image-picker";
 
-const placeholderImage = "https://via.placeholder.com/150";
+const placeholderImage = require("./assets/noprofile.jpg");
 
 const Profile = ({
   navigation,
@@ -149,7 +149,7 @@ const Profile = ({
       <View style={styles.imageContainer}>
         <CustomTouchableOpacity onPress={handleImagePress} activeOpacity={0.8}>
           <Image
-            source={{ uri: profileImage || placeholderImage }}
+            source={profileImage ? { uri: profileImage } : placeholderImage}
             style={styles.profileImage}
           />
           <View style={styles.cameraIconContainer}>
