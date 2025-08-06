@@ -11,8 +11,9 @@ import {
 import PostCard from "../components/PostCard";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { fetchPosts } from "../store/posts.slice";
+import { PostScreenProps } from "../constants/types";
 
-export const Post = () => {
+export const Post = ({ navigation }: PostScreenProps) => {
   const { posts, status, error } = useAppSelector((state) => state.posts);
   const dispatch = useAppDispatch();
 
@@ -37,7 +38,7 @@ export const Post = () => {
         data={posts.posts}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => {
-          return <PostCard post={item} />;
+          return <PostCard post={item} navigation={navigation} />;
         }}
       />
     );

@@ -4,6 +4,9 @@ export type RootStackParamList = {
   Login: undefined;
   AuthLoading: undefined;
   Profile: undefined;
+  Home: undefined;
+  Post: undefined;
+  SinglePost: { id: number };
 };
 
 type Reactions = {
@@ -36,4 +39,9 @@ export type AuthLoadingScreenProps = StackScreenProps<
 export type ProfileScreenProps = StackScreenProps<
   RootStackParamList,
   "Profile"
+>;
+export type PostScreenProps = StackScreenProps<RootStackParamList, "Post">;
+export type SinglePostScreenProps = StackScreenProps<
+  RootStackParamList,
+  "SinglePost"
 >;

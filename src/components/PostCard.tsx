@@ -1,8 +1,16 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Posts } from "../constants/types";
+import { Posts, PostScreenProps } from "../constants/types";
+import CustomTouchableOpacity from "./ui/CustomTouchableOpacity";
+import CustomText from "./ui/CustomText";
 
-export const PostCard = ({ post }: { post: Posts }) => {
+export const PostCard = ({
+  post,
+  navigation,
+}: {
+  post: Posts;
+  navigation: PostScreenProps["navigation"];
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -22,6 +30,12 @@ export const PostCard = ({ post }: { post: Posts }) => {
           <Text style={styles.reaction}>👎 {post.reactions.dislikes}</Text>
           <Text style={styles.views}>👁️ {post.views} views</Text>
         </View>
+        <CustomTouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("SinglePost", { id: post.id })}
+        >
+          <CustomText style={styles.buttonText}>View</CustomText>
+        </CustomTouchableOpacity>
       </View>
     </View>
   );
@@ -84,6 +98,21 @@ const styles = StyleSheet.create({
   views: {
     fontSize: 14,
     color: "#999",
+  },
+  button: {
+    width: "40%",
+    backgroundColor: "#6C63FF",
+    paddingVertical: 10,
+    borderRadius: 10,
+    alignItems: "center",
+    alignSelf: "center",
+    marginTop: 25,
+    elevation: 3,
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "600",
+    fontSize: 16,
   },
 });
 
