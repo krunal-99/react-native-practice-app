@@ -31,6 +31,27 @@ const Profile = ({
   const [email, setEmail] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await AsyncStorage.getItem("user");
+      if (user) {
+        const parsedUser = JSON.parse(user);
+        setEmail(parsedUser.email || "");
+      }
+    };
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      const imageUri = await AsyncStorage.getItem("profileImage");
+      if (imageUri) {
+        setProfileImage(imageUri);
+      }
+    };
+    fetchProfileImage();
+  }, []);
+
   const requestPermissions = async () => {
     if (Platform.OS === "android") {
       const cameraGranted = await PermissionsAndroid.request(
@@ -71,6 +92,7 @@ const Profile = ({
       } else if (response.errorCode) {
         console.log("ImagePicker Error: ", response.errorMessage);
       } else if (response.assets && response.assets.length > 0) {
+        AsyncStorage.setItem("profileImage", response.assets[0].uri || "");
         setProfileImage(response.assets[0].uri || null);
       }
     });
@@ -88,21 +110,18 @@ const Profile = ({
       } else if (response.errorCode) {
         console.log("ImagePicker Error: ", response.errorMessage);
       } else if (response.assets && response.assets.length > 0) {
+        AsyncStorage.setItem("profileImage", response.assets[0].uri || "");
         setProfileImage(response.assets[0].uri || null);
       }
     });
   };
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const user = await AsyncStorage.getItem("user");
-      if (user) {
-        const parsedUser = JSON.parse(user);
-        setEmail(parsedUser.email || "");
-      }
-    };
-    fetchUser();
-  }, []);
+  const handleRemovePhoto = async () => {
+    setModalVisible(false);
+    await AsyncStorage.removeItem("profileImage");
+    setProfileImage(null);
+    Alert.alert("Profile picture removed successfully.");
+  };
 
   const handleLogout = async () => {
     Alert.alert("Confirm Logout", "Are you sure you want to logout?", [
@@ -174,6 +193,15 @@ const Profile = ({
             >
               <CustomText style={styles.modalButtonText}>
                 Take a Photo
+              </CustomText>
+            </CustomTouchableOpacity>
+
+            <CustomTouchableOpacity
+              style={styles.modalButton}
+              onPress={() => handleRemovePhoto()}
+            >
+              <CustomText style={styles.modalButtonText}>
+                Remove Photo
               </CustomText>
             </CustomTouchableOpacity>
 
