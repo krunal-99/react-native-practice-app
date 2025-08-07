@@ -60,7 +60,7 @@ const HomeScreen = () => {
         },
         tabBarStyle: {
           paddingBottom: 5,
-          height: 60,
+          height: 70,
         },
       })}
     >

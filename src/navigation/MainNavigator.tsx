@@ -19,7 +19,7 @@ export const MainNavigator = () => {
         name="Home"
         component={HomeScreen}
         options={{ headerShown: false }}
-      ></Stack.Screen>
+      />
     </Stack.Navigator>
   );
 };
